@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Unsplash, { toJson } from "unsplash-js";
 import NavBar from "./NavBar.jsx";
 import "./index.css";
 import { BsSearch } from "react-icons/bs";
@@ -13,7 +12,7 @@ export default function SearchPhotos() {
   const [pics, setPics] = useState([]);
   const searchPhotos = async (e) => {
     e.preventDefault();
-    unsplash.search
+    unsplash.search 
       .photos(query)
       .then(toJson)
       .then((json) => {
@@ -24,32 +23,41 @@ export default function SearchPhotos() {
     <>
       <div className="">
         <form id="form" onSubmit={searchPhotos}>
-          <div className="text-center relative">
-            <input
-              type="text"
-              name="query"
-              id="input"
-              className="mt-10 h-2 border-2 w-2/5 rounded-full p-10 px-5 pr-16 "
-              placeholder="Enter the text to search"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-            />
-            <button type="submit" className="absolute right-80 top-4 mt-5 mr-4">
-              <div className="text-4xl mt-7 ml-5 text-pink-500 mr-12">
-                {<BsSearch />}
+          <div className="relative">
+            <div class="max-w-md mx-auto rounded-lg p-0 m-0 overflow-hidden -mt-8 md:max-w-xl shadow-xl">
+              <div class="md:flex">
+                <div class="w-full p-0">
+                  <div class="relative">
+                    <i class="absolute text-gray-400 top-5 left-4"><svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+</svg></i>
+                    <input
+                      type="text"
+                      name="query"
+                      id="input"
+                      className="bg-white h-16 w-full px-14 font-medium text-md rounded-lg focus:outline-none hover:cursor-pointer"
+                      placeholder="Search..."
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                    />
+                    <span class="absolute top-4 right-5 border-l pl-4">
+                      <i class="fa fa-microphone text-gray-500 hover:text-green-500 hover:cursor-pointer"></i>
+                    </span>
+                  </div>
+                </div>
               </div>
-            </button>
+            </div>
           </div>
         </form>
-        <div className="" id="card-list">
+        <div className="p-10" id="card-list">
           {pics.map((pic) => (
             <div id="card" key={pic.id}>
               <img
                 id="card--image"
                 alt={pic.alt_description}
                 src={pic.urls.full}
-                width="50%"
-                height="50%"
+                width="100%"
+                height="100%"
               ></img>
             </div>
           ))}
