@@ -1,30 +1,51 @@
 import React, { useState } from "react";
-import NavBar from "./NavBar.jsx";
 import "./index.css";
-import { BsSearch } from "react-icons/bs";
-const unsplash = new Unsplash({
-  accessKey: "VvkyIVczHhrUMcMsJZ_YQ04wlGMNj__zPm9c3sJ-_h0",
-  secret: "ryd2UtE8wbaa_fE8101JPVw-vBJfSGg4QwpayN2pkyY",
-});
+import axios from "axios";
 
 export default function SearchPhotos() {
   const [query, setQuery] = useState("");
-  const [pics, setPics] = useState([]);
+  console.log(query);
+  const [pics1, setPics1] = useState([]);
+  const [pics2, setPics2] = useState([]);
+  const [pics3, setPics3] = useState([]);
   const searchPhotos = async (e) => {
     e.preventDefault();
-    unsplash.search 
-      .photos(query)
-      .then(toJson)
-      .then((json) => {
-        setPics(json.results);
-      });
+    let headersList = {
+      "Accept": "*/*",
+      "User-Agent": "Thunder Client (https://www.thunderclient.io)" 
+     }
+     
+     let reqOptions1 = {
+       url: `http://localhost:4001/photos?query=${query}&page=1&perpage=3`,
+       method: "GET",
+       headers: headersList,
+     }
+     let reqOptions2 = {
+      url: `http://localhost:4002/photos?query=${query}&page=2&perpage=3`,
+      method: "GET",
+      headers: headersList,
+    }
+    let reqOptions3 = {
+      url: `http://localhost:4003/photos?query=${query}&page=3&perpage=3`,
+      method: "GET",
+      headers: headersList,
+    }
+     axios.request(reqOptions1).then(function (response) {
+       setPics1(response.data);
+     })
+     axios.request(reqOptions2).then(function (response) {
+      setPics2(response.data);
+    })
+    axios.request(reqOptions3).then(function (response) {
+      setPics3(response.data);
+    })
   };
   return (
     <>
       <div className="">
         <form id="form" onSubmit={searchPhotos}>
           <div className="relative">
-            <div class="max-w-md mx-auto rounded-lg p-0 m-0 overflow-hidden -mt-8 md:max-w-xl shadow-xl">
+            <div class="max-w-md mx-auto rounded-lg p-0 m-0 -mt-8 md:max-w-xl shadow-xl">
               <div class="md:flex">
                 <div class="w-full p-0">
                   <div class="relative">
@@ -49,18 +70,16 @@ export default function SearchPhotos() {
             </div>
           </div>
         </form>
-        <div className="p-10" id="card-list">
-          {pics.map((pic) => (
-            <div id="card" key={pic.id}>
-              <img
-                id="card--image"
-                alt={pic.alt_description}
-                src={pic.urls.full}
-                width="100%"
-                height="100%"
-              ></img>
-            </div>
-          ))}
+        <div id="photos" className="mt-10"  > 
+        {pics1.map((pic)=>(
+            <img id="#photos img" src={pic} className="w-full h-full"></img>
+        ))}
+        {pics2.map((pic)=>(
+            <img id="#photos img" src={pic} className="w-full h-full"></img>
+        ))}
+        {pics3.map((pic)=>(
+            <img id="#photos img" src={pic} className="w-full h-full"></img>
+        ))}
         </div>
       </div>
     </>
